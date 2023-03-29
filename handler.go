@@ -25,7 +25,7 @@ func (ch *ComputeHandler) Compute() error {
 	// Trim any null bytes from the input.
 	trimmedInput := strings.Trim(string(input), "\x00")
 
-	res, err := PostfixToInfix([]byte(trimmedInput))
+	res, err := PostfixToInfix(trimmedInput)
 	if err != nil {
 		return err
 	}

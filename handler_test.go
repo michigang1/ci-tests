@@ -6,13 +6,9 @@ import (
 	"testing"
 )
 
-func Test(t *testing.T) { TestingT(t) }
+func TestHandler(t *testing.T) { TestingT(t) }
 
-type CHandlerSuite struct{}
-
-var _ = Suite(&CHandlerSuite{})
-
-func (s *CHandlerSuite) TestComputeHandler(c *C) {
+func (s *MySuite) TestComputeHandler(c *C) {
 	b := bytes.NewBuffer(make([]byte, 0))
 
 	handler := ComputeHandler{
@@ -25,7 +21,7 @@ func (s *CHandlerSuite) TestComputeHandler(c *C) {
 	c.Assert(b.String(), Equals, "2 + 2")
 }
 
-func (s *CHandlerSuite) TestComputeHandlerHard(c *C) {
+func (s *MySuite) TestComputeHandlerHard(c *C) {
 	b := bytes.NewBuffer(make([]byte, 0))
 
 	handler := ComputeHandler{
@@ -39,7 +35,7 @@ func (s *CHandlerSuite) TestComputeHandlerHard(c *C) {
 	c.Assert(b.String(), Equals, "(9 - 3) * 2 + 1")
 }
 
-func (s *CHandlerSuite) TestComputeHandlerError(c *C) {
+func (s *MySuite) TestComputeHandlerError(c *C) {
 	b := bytes.NewBuffer(make([]byte, 0))
 
 	handler := ComputeHandler{
