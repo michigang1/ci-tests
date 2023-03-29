@@ -5,6 +5,14 @@ import (
 	"strings"
 )
 
+const (
+	plus     = "+"
+	minus    = "-"
+	multiply = "*"
+	divide   = "/"
+	power    = "^"
+)
+
 // PostfixToInfix converts a postfix expression to an infix expression.
 func PostfixToInfix(input string) (output string, err error) {
 	var precedence = map[string]uint8{
