@@ -6,9 +6,13 @@ import (
 	"testing"
 )
 
+type ParserSuite struct{}
+
+var _ = Suite(&ParserSuite{})
+
 func TestParser(t *testing.T) { TestingT(t) }
 
-func (s *MySuite) TestPostfixToInfix(c *C) {
+func (s *ParserSuite) TestPostfixToInfix(c *C) {
 	res, err := PostfixToInfix("2 2 +")
 	c.Assert(res, Equals, "2 + 2")
 
