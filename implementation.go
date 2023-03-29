@@ -5,16 +5,16 @@ import (
 	"strings"
 )
 
-var precedence = map[string]uint8{
-	plus:     1,
-	minus:    1,
-	multiply: 2,
-	divide:   2,
-	power:    3,
-}
-
 // PostfixToInfix converts a postfix expression to an infix expression.
 func PostfixToInfix(input string) (output string, err error) {
+	var precedence = map[string]uint8{
+		plus:     1,
+		minus:    1,
+		multiply: 2,
+		divide:   2,
+		power:    3,
+	}
+
 	v := validator{ValidOperatorExp: `[-\+\*\^\/]`, ValidOperandExp: `(\d+|(\d+[,\.]\d+))`}
 	if !v.ValidInput(input) {
 		err = fmt.Errorf("invalid input expression")
