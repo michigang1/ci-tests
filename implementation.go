@@ -2,6 +2,7 @@ package lab2
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 )
 
@@ -12,6 +13,51 @@ const (
 	divide   = "/"
 	power    = "^"
 )
+
+type validator struct {
+	ValidOperatorExp string
+	ValidOperandExp  string
+}
+
+func (v *validator) ValidInput(input string) bool {
+	validator := fmt.Sprintf(`^((%s|%s)\s){2,}(%s\s){0,}%s$`, v.ValidOperandExp, v.ValidOperatorExp, v.ValidOperatorExp, v.ValidOperatorExp)
+	isValid, _ := regexp.MatchString(validator, input)
+	return isValid
+}
+
+func (v *validator) CheckArgsAmount(args []string) error {
+	operators, operands := 0, 0
+	operator := fmt.Sprintf(`^%s$`, v.ValidOperatorExp)
+	operand := fmt.Sprintf(`^%s$`, v.ValidOperandExp)
+	for _, arg := range args {
+		if isOperator, _ := regexp.MatchString(operator, arg); isOperator {
+			operators++
+		} else if isOperand, _ := regexp.MatchString(operand, arg); isOperand {
+			operands++
+		}
+	}
+	switch {
+	case operators+operands != len(args):
+		return fmt.Errorf("invalid expression argument(s)")
+	case operands > operators+1:
+		return fmt.Errorf("too many operands")
+	case operators > operands-1:
+		return fmt.Errorf("too many operators")
+	default:
+		return nil
+	}
+}
+
+func (v *validator) IncludesOperator(str string) bool {
+	includes, _ := regexp.MatchString(v.ValidOperatorExp, str)
+	return includes
+}
+
+func (v *validator) IsOperator(str string) bool {
+	matching := fmt.Sprintf(`^%s$`, v.ValidOperatorExp)
+	includes, _ := regexp.MatchString(matching, str)
+	return includes
+}
 
 // PostfixToInfix converts a postfix expression to an infix expression.
 func PostfixToInfix(input string) (output string, err error) {
