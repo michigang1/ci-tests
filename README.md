@@ -1,6 +1,6 @@
 # Postfix to infix converter using Unit-test and GitHub Actions
 
-This is lab 1 for software architecture subject.
+This is lab 2 for software architecture subject.
 
 ## Installation
 
