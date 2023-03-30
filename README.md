@@ -41,6 +41,13 @@ go test
         Saving to file
 
 ```
+## GitHub Actions:
+* [Check is passed](https://github.com/michigang1/ci-tests/actions/runs/4559085587)
+* [Check isn't passed](https://github.com/michigang1/ci-tests/actions/runs/4557343360)
+
+--------------
+* All checks of this project - [here](https://github.com/michigang1/ci-tests/actions)
+* All pull-requests of this project - [here](https://github.com/michigang1/ci-tests/pulls?q=is%3Apr+is%3Aclosed)
 
 ## Contributors:
 
