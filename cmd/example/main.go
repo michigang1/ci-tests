@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"strings"
@@ -11,15 +12,21 @@ import (
 )
 
 var (
-	cmdInput  = flag.String("e", "", "Expression to compute")
-	fileInput = flag.String("f", "", "Reading from file")
-	saveInput = flag.String("o", "", "Saving to file")
+	cmdInput   = flag.String("e", "", "Expression to compute")
+	fileInput  = flag.String("f", "", "Reading from file")
+	saveOutput = flag.String("o", "", "Saving to file")
 )
 
 func main() {
 	flag.Parse()
 
-	handler := &lab2.ComputeHandler{}
+	var input io.Reader = nil
+	var output = os.Stdout
+
+	handler := &lab2.ComputeHandler{
+		Input:  input,
+		Output: output,
+	}
 	if *cmdInput != "" && *fileInput != "" {
 		log.Fatal("Can't use -e and -f simultaneously!")
 	}
@@ -34,15 +41,25 @@ func main() {
 			log.Fatal(err)
 		}
 		handler.Input = file
-		defer file.Close()
+		defer func(file *os.File) {
+			err := file.Close()
+			if err != nil {
+				log.Fatal(err)
+			}
+		}(file)
 	}
 
-	if *saveInput != "" {
-		file, err := os.Create(*saveInput)
+	if *saveOutput != "" {
+		file, err := os.Create(*saveOutput)
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer file.Close()
+		defer func(file *os.File) {
+			err := file.Close()
+			if err != nil {
+				log.Fatal(err)
+			}
+		}(file)
 		handler.Output = file
 	}
 
@@ -50,11 +67,13 @@ func main() {
 		handler.Output = os.Stdout
 	}
 
+	if handler.Input == nil {
+		handler.Input = os.Stdin
+		log.Fatal("No input provided!")
+	}
+
 	err := handler.Compute()
 	if err != nil {
 		fmt.Println(err)
 	}
-
-	res, _ := lab2.PostfixToInfix("2 2 +")
-	fmt.Println(res)
 }
